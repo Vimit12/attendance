@@ -1,0 +1,40 @@
+{%extends 'attendance/home.html' %}
+{% load crispy_forms_tags %}
+
+{%block content%}
+
+
+<div class="container" style="margin-top: 8.5em;">
+
+     <div class="content shadow-lg p-3 mb-5 bg-white rounded">
+        {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                    <p class="messages" align="center" style="background: #c5fcde;height: 3em;padding-top: 0.65em;opacity: 0.5;">{{ message }}</p>
+                    {% endfor %}
+                </ul>
+        {% endif %}
+        <form action="" method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-">Log In</legend>
+                {{ form|crispy }}
+            </fieldset>
+            <div class='form-group'>
+                <input type="submit" class="btn btn-info" value="Login">
+                <small class="text-muted"><a class="ml-2" href="{% url 'password_reset'%}">Forgot Password? </a></small>
+            </div>
+        </form>
+        <div class="border-top pt-3">
+            <small class="text-muted">Need An Account? <a class="ml-2" href="{% url 'signup'%}">Sign Up Now</a></small>
+        </div>
+     </div>
+     
+</div>
+
+{%endblock%}
+
+
+{% block sidebar %}
+{%endblock%}
+

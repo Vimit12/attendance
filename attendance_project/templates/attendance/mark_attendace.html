@@ -1,0 +1,195 @@
+{%extends 'attendance/home.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block link %}
+    
+    <link rel="stylesheet" type="text/css" href="{% static 'css/attendance.css' %}">
+
+    
+{% endblock %}
+
+{%block content%}
+
+    
+    <div class="container shadow-lg p-3 mb-5 bg-white rounded attendance form-group">
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                {% if message.tags == "warning" %}
+                <p class="messages" align="center" style="background: #fcd1b8;height: 3em;padding-top: 0.65em;opacity: 0.5;">
+                    {{ message }}</p>
+                {% else %}
+                <p class="messages" align="center" style="background: #c5fcde;height: 3em;padding-top: 0.65em;opacity: 0.5;">
+                    {{ message }}</p>
+                {% endif %}
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <h4 style="font-family:Times New Roman;">Employee Detail :<br></h4>
+        <hr>
+        {% if emp_obj %}
+            
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="data" colspan="3">Name : {{emp_obj.name}}</td>
+                        <td class="data" colspan="2">Employee ID : {{emp_obj.emp_id}}</td>
+                    </tr>
+                    <tr>
+                        <td class="data" colspan="3">Gender : {{emp_obj.gender}}</td>
+                        <td class="data" colspan="2">DOB : {{emp_obj.dob}}</td>
+                    </tr>
+                    <tr>
+                        <td class="data" colspan="5">Address : {{emp_obj.address}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+        {% endif %}
+        
+        <div class="form_attendance">
+            <form method="post" >
+                {% csrf_token %}
+                <legend class="border-bottom mb-" style="font-family:Times New Roman;">Mark Attendance</legend>
+
+                <div class="form-row" style="margin-top: 1em;" >
+
+                    <div class="form-group col-md-6 mb-0">
+                        <!-- <input type="date" id="attendance" name="attendance" class="form-control"> -->
+                        {{aform | crispy}}
+                    </div>
+                    <div class='form-group col-md-3 mb-0' style="width: 300px;">
+                        <!-- <hr style="clear: both;visibility: hidden;"> -->
+                        <select class="ui dropdown  w-100 month" name="month">
+                            <option value="">Month</option>
+                            <option value="01">Januray</option>
+                            <option value="02">Febuary</option>
+                            <option value="03">March</option>
+                            <option value="04">April</option>
+                            <option value="05">May</option>
+                            <option value="06">June</option>
+                            <option value="07">July</option>
+                            <option value="08">August</option>
+                            <option value="09">September</option>
+                            <option value="10">October</option>
+                            <option value="11">November</option>
+                            <option value="12">December</option>
+                        </select>
+                    </div>
+                    <div class='form-group col-md-3 mb-0' style="">
+                        <input type="submit" class="btn btn-info" value="Submit" style="margin-top: 2em;">
+                    </div>
+                </div>
+            </form>
+
+            <hr>
+            {% if emp_user_all %}
+
+            <table class="table table-bordered" style="border: 1px solid black;">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Date</th>
+                        <th scope="col">In Time</th>
+                        <th scope="col">Out Time</th>
+                        <th scope="col">Duration</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for emp in emp_user_all %}
+
+                        <!-- <tr>
+                            <th scope="row">{{emp.attendance_date}}</th>
+
+                            <td>{{emp.in_time}}</td>
+
+                            {% if emp.out_time %}
+                                <td>{{emp.out_time}}</td>
+                            {% else %}
+                                <td>-</td>
+                            {% endif %}
+                            
+                            {% if not emp.stats %}
+                                <td class="table-danger" style="background-color: rgb(255, 233, 201);">{{emp.duration}}
+                                </td>
+                            {% else %}
+
+                                {% if emp.duration %}
+                                    <td class="table-success" style="background-color: rgb(198, 255, 142);">{{emp.duration}}</td>
+                                {% else %}
+                                    <td>00:00:00</td>
+                                {% endif %}
+
+                            {% endif %}
+                        </tr> -->
+                        <tr style="border: 1px solid black;">
+                            {% if not emp.stats %}
+                                <th scope="row" style="background-color: rgb(255, 233, 201);border: 1px solid black;">
+                                    {{emp.attendance_date}}
+                                </th>
+
+                                <td style="background-color: rgb(255, 233, 201);border: 1px solid black;">
+                                    {{emp.in_time}}</td>
+
+                                {% if emp.out_time %}
+                                    <td style="background-color: rgb(255, 233, 201);border: 1px solid black;">
+                                        {{emp.out_time}}</td>
+                                {% else %}
+                                    <td>-</td>
+                                {% endif %}
+
+                                {% if emp.duration %}
+                                    <td class="table-success"
+                                        style="background-color: rgb(255, 233, 201);border: 1px solid black;">
+                                        {{emp.duration}}</td>
+                                {% else %}
+                                    <td style="border: 1px solid black;">00:00:00</td>
+                                {% endif %}
+
+                            {% else %}
+                               
+                                <th scope="row" style="background-color: rgb(198, 255, 142);border: 1px solid black;">
+                                    {{emp.attendance_date}}
+                                </th>
+
+                                <td style="background-color: rgb(198, 255, 142);border: 1px solid black;">
+                                    {{emp.in_time}}</td>
+
+                                {% if emp.out_time %}
+                                    <td style="background-color: rgb(198, 255, 142);border: 1px solid black;">
+                                        {{emp.out_time}}</td>
+                                {% else %}
+                                    <td style="border: 1px solid black;">-</td>
+                                {% endif %}
+
+                                {% if emp.duration %}
+                                    <td class="table-success"
+                                        style="background-color: rgb(198, 255, 142);border: 1px solid black;">
+                                        {{emp.duration}}</td>
+                                {% else %}
+                                    <td style="border: 1px solid black;">00:00:00</td>
+                                {% endif %}
+
+                            {% endif %}
+                        </tr>
+
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            {% else %}
+
+                <cite align="center" style="text-align: center;vertical-align: middle; line-height: 20px;font-size: 15px; margin-left: 1em;">No record found</cite>
+            {%endif%}
+        </div>
+        
+
+
+    
+
+</div>
+{%endblock%}
+
+ {% block script_window %}
+
+ {% endblock %}

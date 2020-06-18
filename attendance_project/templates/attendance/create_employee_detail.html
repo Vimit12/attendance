@@ -1,0 +1,41 @@
+{%extends 'attendance/home.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block link %}
+
+{% endblock %}
+
+{%block content%}
+  <div class="container shadow-lg p-3 mb-5 bg-white rounded login form-group">
+
+      {% if messages %}
+      <ul class="messages">
+          {% for message in messages %}
+            {% if message.tags == "warning" %}
+                <p class="messages" align="center" style="background: #fcd1b8;height: 3em;padding-top: 0.65em;opacity: 0.5;">
+                    {{ message }}</p>
+              {% else %}
+                    <p class="messages" align="center"
+                        style="background: #c5fcde;height: 3em;padding-top: 0.65em;opacity: 0.5;">
+                        {{ message }}</p>
+              {% endif %}
+          {% endfor %}
+      </ul>
+      {% endif %}
+      
+      <hr>
+      <form class="form-horizontal" action="" method="POST">
+          {% csrf_token %}
+
+          <fieldset class="form-group">
+              <legend class="border-bottom mb-">Employee Detail</legend>
+              {{ form |crispy }}
+          </fieldset>
+          <div class='form-group'>
+              <input type="submit" class="btn btn-info" value="Submit">
+          </div>
+
+      </form>
+  </div>
+{%endblock%}

@@ -1,0 +1,79 @@
+{%extends 'attendance/home.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block link %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/attendance.css' %}">
+
+
+{% endblock %}
+
+{%block content%}
+
+<div class="container shadow-lg p-3 mb-5 bg-white rounded attendance form-group">
+
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        {% if message.tags == "warning" %}
+        <p class="messages" align="center" style="background: #fcd1b8;height: 3em;padding-top: 0.65em;opacity: 0.5;">
+            {{ message }}</p>
+        {% else %}
+        <p class="messages" align="center" style="background: #c5fcde;height: 3em;padding-top: 0.65em;opacity: 0.5;">
+            {{ message }}</p>
+        {% endif %}
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+
+    <div class="form_attendance">
+        <form method="post">
+            {% csrf_token %}
+            <legend class="border-bottom mb-" style="font-family:Times New Roman;margin-bottom: 1em;">Apply Leave</legend>
+            
+            <div class="row">
+                <div class="col">{{lform.from_leave_date |as_crispy_field}}</div>
+                <div class="col">{{lform.to_leave_date |as_crispy_field}}</div>
+                <div class="w-100"></div>
+                <div class="col">{{lform.leave_message |as_crispy_field}}</div>
+                <div class="col">{{lform.leave_status |as_crispy_field}}</div>
+                
+            </div>
+            <button type="submit" class="btn btn-info">Apply Leave</button>
+        </form>
+
+        {% if leave_report %}
+            <table class="table table-bordered" style="margin-top: 2em;">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">From</th>
+                        <th scope="col">To</th>
+                        <th scope="col">Message</th>
+                        <th scope="col">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for leave in leave_report %}
+                        <tr>
+                            <th scope="row">{{leave.from_leave_date}}</th>
+                            <td>{{leave.to_leave_date}}</td>
+                            <td>{{leave.leave_message}}</td>
+                            <td>{{leave.leave_status}}</td>
+                            
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    </div>
+</div>
+{%endblock%}
+
+
+
+
+{% block script_window %}
+
+{% endblock %}
